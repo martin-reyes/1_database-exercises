@@ -4,60 +4,61 @@ DESCRIBE employees.employees;
 -- 1. Create a new file named order_by_exercises.sql and copy in the contents of your exercise from the previous lesson.
 		-- Pasted on the bottom
 /* 2. Find all employees with first names 'Irena', 'Vidya', or 'Maya', and order your results returned by first name. 
-		What was the first and last name in the first row of the results? 
-		What was the first and last name of the last person in the table?
-
+		What was the first and last name in the first row of the results? Irena Reutenauer
+		What was the first and last name of the last person in the table? Vidya Simmen
+		query below
 */
 SELECT emp_no, first_name,last_name FROM employees.employees
 WHERE first_name IN ('Irena', 'Vidya', 'Maya')
-ORDER BY ;
+ORDER BY first_name ASC;
 /* 3. Find all employees with first names 'Irena', 'Vidya', or 'Maya', and order your results returned by first name and then last name.
-		What was the first and last name in the first row of the results?
-		What was the first and last name of the last person in the table?
-
+		What was the first and last name in the first row of the results? Irena Acton
+		What was the first and last name of the last person in the table? Vidya Zweizig
+		query below
 */
 SELECT emp_no, first_name,last_name FROM employees.employees
 WHERE first_name IN ('Irena', 'Vidya', 'Maya')
-ORDER BY ;
+ORDER BY first_name ASC, last_name ASC;
 /* 4. Find all employees with first names 'Irena', 'Vidya', or 'Maya', and order your results returned by last name and then first name.
-		What was the first and last name in the first row of the results?
-		What was the first and last name of the last person in the table?
-
+		What was the first and last name in the first row of the results? Irena Acton
+		What was the first and last name of the last person in the table? Maya Zyda
+		query below
 */
 SELECT emp_no, first_name,last_name FROM employees.employees
 WHERE first_name IN ('Irena', 'Vidya', 'Maya')
-ORDER BY ;
+ORDER BY last_name ASC, first_name ASC;
 /* 5. Write a query to to find all employees whose last name starts and ends with 'E'. Sort the results by their employee number. 
-			Number of employees returned:
-			The first employee number and their first and last name:
-			the last employee number with their first and last name:
-
+		Number of employees returned:
+		The first employee number and their first and last name: 10021 Ramzi Erde
+		the last employee number with their first and last name: 499648 Tadahiro Erde
+		query below
 */
-SELECT DISTINCT last_name FROM employees.employees
+SELECT DISTINCT emp_no, first_name, last_name FROM employees.employees
 WHERE last_name LIKE 'E%E'
-ORDER BY ;
+ORDER BY emp_no ASC;
 /* 6. Write a query to to find all employees whose last name starts and ends with 'E'. Sort the results by their hire date, so that the newest employees are listed first.
-			Number of employees returned:
-            The name of the newest employee:
-            The name of the oldest employee:
-
+		Number of employees returned:
+		The name of the newest employee: Teiji Eldridge
+		The name of the oldest employee: Sergi Erde
+		query below
 */
-SELECT DISTINCT last_name FROM employees.employees
+SELECT DISTINCT hire_date, first_name, last_name
+FROM employees.employees
 WHERE last_name LIKE 'E%E'
-ORDER BY;
+ORDER BY hire_date ASC;
 /* 7. Find all employees hired in the 90s and born on Christmas. Sort the results so that the oldest employee who was hired last is the first result.
-			Number of employees returned:
-            The name of the oldest employee who was hired last: 
-            The name of the youngest employee who was hired first:
-
+		Number of employees returned: 346
+		The name of the oldest employee who was hired last: Vidya VanScheik
+		The name of the youngest employee who was hired first: Lena Lenart
+		query below
 */
-SELECT * FROM employees.employees 
+SELECT hire_date, birth_date, first_name, last_name 
+FROM employees.employees 
 WHERE hire_date LIKE '199%'
 		AND hire_date LIKE '%12-25'
-ORDER BY ;
+ORDER BY hire_date DESC, birth_date ASC;
 
-
-
+-- -------------------------------------------
 
 /* Exercise 4_where_advanced_exercises
 -- 1. Find all current or previous employees with first names 'Irena', 'Vidya', or 'Maya' using IN. What is the employee number of the top three results?
