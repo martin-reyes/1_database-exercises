@@ -1,15 +1,21 @@
 USE employees;
 SELECT * FROM employees.employees;
 DESCRIBE employees.employees;
--- 1. Find all current or previous employees with first names 'Irena', 'Vidya', or 'Maya' using IN. What is the employee number of the top three results?
+/* 1. Find all current or previous employees with first names 'Irena', 'Vidya', or 'Maya' using IN.
+		What is the employee number of the top three results?
+*/
 SELECT emp_no, first_name,last_name FROM employees.employees
 WHERE first_name IN ('Irena', 'Vidya', 'Maya');
 	-- 10200, 10397, 10610
--- 2. Find all current or previous employees with first names 'Irena', 'Vidya', or 'Maya', as in Q2, but use OR instead of IN. What is the employee number of the top three results? Does it match the previous question?
+/* 2. Find all current or previous employees with first names 'Irena', 'Vidya', or 'Maya', as in Q2, but use OR instead of IN.
+		What is the employee number of the top three results? Does it match the previous question?
+*/
 SELECT emp_no, first_name,last_name FROM employees.employees
 WHERE first_name = 'Irena' OR first_name = 'Vidya' OR first_name = 'Maya';
 	-- 10200, 10397, 10610. Yes
--- 3. Find all current or previous employees with first names 'Irena', 'Vidya', or 'Maya', using OR, and who is male. What is the employee number of the top three results.
+/* 3. Find all current or previous employees with first names 'Irena', 'Vidya', or 'Maya', using OR, and who is male.
+		What is the employee number of the top three results.
+*/
 SELECT emp_no, first_name,last_name, gender
 FROM employees.employees
 WHERE (first_name = 'Irena' OR first_name = 'Vidya' 
