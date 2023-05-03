@@ -22,7 +22,7 @@ WHERE last_name LIKE 'E%E';
 SELECT first_name, last_name, hire_date, birth_date, DATEDIFF(NOW(), hire_date) AS days_worked
 FROM employees.employees 
 WHERE hire_date LIKE '199%'
-		AND hire_date LIKE '%12-25';
+		AND birth_date LIKE '%12-25';
 -- 6. Find the smallest and largest current salary from the salaries table.
 SELECT MIN(salary), MAX(salary) FROM salaries;
 
