@@ -39,12 +39,13 @@ WHERE hire_date LIKE '199%';
 -- 10008, 10011, 10012
 -- 9. Find all current or previous employees born on Christmas. Enter a comment with top three employee numbers.
 SELECT * FROM employees.employees 
-WHERE hire_date LIKE '%12-25';
--- 10050, 10456, 10463
+WHERE birth_date LIKE '%12-25';
+-- 10078, 10115, 10261
 -- 10. Find all current or previous employees hired in the 90s and born on Christmas. Enter a comment with top three employee numbers.
 SELECT * FROM employees.employees 
 WHERE hire_date LIKE '199%'
-		AND hire_date LIKE '%12-25';
+		AND birth_date LIKE '%12-25';
+-- 10261, 10438, 10681
 -- 11. Find all unique last names that have a 'q' in their last name.
 SELECT DISTINCT last_name FROM employees.employees
 WHERE last_name LIKE '%q%';

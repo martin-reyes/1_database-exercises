@@ -16,7 +16,7 @@ ORDER BY first_name ASC;
 		What was the first and last name of the last person in the table? Vidya Zweizig
 		query below
 */
-SELECT emp_no, first_name,last_name FROM employees.employees
+SELECT emp_no, first_name, last_name FROM employees.employees
 WHERE first_name IN ('Irena', 'Vidya', 'Maya')
 ORDER BY first_name ASC, last_name ASC;
 /* 4. Find all employees with first names 'Irena', 'Vidya', or 'Maya', and order your results returned by last name and then first name.
@@ -28,12 +28,12 @@ SELECT emp_no, first_name,last_name FROM employees.employees
 WHERE first_name IN ('Irena', 'Vidya', 'Maya')
 ORDER BY last_name ASC, first_name ASC;
 /* 5. Write a query to to find all employees whose last name starts and ends with 'E'. Sort the results by their employee number. 
-		Number of employees returned:
+		Number of employees returned: 900
 		The first employee number and their first and last name: 10021 Ramzi Erde
 		the last employee number with their first and last name: 499648 Tadahiro Erde
 		query below
 */
-SELECT DISTINCT emp_no, first_name, last_name FROM employees.employees
+SELECT DISTINCT * FROM employees.employees
 WHERE last_name LIKE 'E%E'
 ORDER BY emp_no ASC;
 /* 6. Write a query to to find all employees whose last name starts and ends with 'E'. Sort the results by their hire date, so that the newest employees are listed first.
@@ -46,16 +46,17 @@ SELECT DISTINCT hire_date, first_name, last_name
 FROM employees.employees
 WHERE last_name LIKE 'E%E'
 ORDER BY hire_date ASC;
-/* 7. Find all employees hired in the 90s and born on Christmas. Sort the results so that the oldest employee who was hired last is the first result.
-		Number of employees returned: 346
-		The name of the oldest employee who was hired last: Vidya VanScheik
-		The name of the youngest employee who was hired first: Lena Lenart
+/* 7. Find all employees hired in the 90s and born on Christmas.
+		Sort the results so that the oldest employee who was hired last is the first result.
+		Number of employees returned: 362
+		The name of the oldest employee who was hired last: Khun Bernini
+		The name of the youngest employee who was hired first: Aslelm Capello
 		query below
 */
 SELECT hire_date, birth_date, first_name, last_name 
 FROM employees.employees 
 WHERE hire_date LIKE '199%'
-		AND hire_date LIKE '%12-25'
+		AND birth_date LIKE '%12-25'
 ORDER BY hire_date DESC, birth_date ASC;
 
 -- -------------------------------------------

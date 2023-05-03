@@ -16,9 +16,9 @@ LIMIT 10;
 */
 SELECT * FROM employees.employees
 WHERE hire_date LIKE '199%' 
-	AND hire_date LIKE '%12-25'
+	AND birth_date LIKE '%12-25'
 ORDER BY hire_date
-LIMIT 10; -- Yinghua Dredge, Jinpo Langford, Tiina Speek, Takahira Spataro, Jaber Piveteau
+LIMIT 5; -- Alselm Cappello, Utz Mandell, Bouchung Schreiter, Baocai Kushner, Petter Stroustrup
 /* 4. Try to think of your results as batches, sets, or pages. The first five results are your first page. 
 		The five after that would be your second page, etc. Update the query to find the tenth page of results.
 		LIMIT and OFFSET can be used to create multiple pages of data.
@@ -29,6 +29,6 @@ LIMIT 10; -- Yinghua Dredge, Jinpo Langford, Tiina Speek, Takahira Spataro, Jabe
 */
 SELECT * FROM employees.employees
 WHERE hire_date LIKE '199%' 
-	AND hire_date LIKE '%12-25'
-ORDER BY hire_date
-LIMIT 5 OFFSET 1; 
+	AND birth_date LIKE '%12-25'
+ORDER BY hire_date ASC
+LIMIT 5 OFFSET 50; 
