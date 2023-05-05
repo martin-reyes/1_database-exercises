@@ -5,12 +5,11 @@ USE employees;
 		How many unique titles have there ever been?
 		7, query below. Could run COUNT(DISTINCT title) to get 7 explicitly
 */
-
 SELECT DISTINCT title FROM titles;
+
 /* 3. Write a query to to find a list of all unique last names of all employees
 		that start and end with 'E' using GROUP BY.
 */
-
 SELECT last_name as last_names_w_e
 	FROM employees.employees
 	WHERE last_name LIKE 'E%E'
