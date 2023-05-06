@@ -109,7 +109,8 @@ FROM titles AS t
 WHERE d.dept_name = 'Customer Service' 
 	AND  t.to_date LIKE '9999%' 
     AND de.to_date LIKE '9999%'
-GROUP BY t.title;
+GROUP BY t.title
+ORDER BY t.title;
 
 /* 5. Find the current salary of all current managers.
 
@@ -125,15 +126,14 @@ Quality Management | Dung Pesch        |  72876
 Research           | Hilary Kambil     |  79393
 Sales              | Hauke Zhang       | 101987
 */ 
-SELECT * /* d.dept_name AS department_name AS dept_name,
+SELECT d.dept_name AS department_name,
 			CONCAT(e.first_name, " ", e.last_name) AS name,
-            salary AS curr_salary
-*/
-FROM titles AS t
-	JOIN employees.employees AS e ON e.emp_no = t.emp_no
-	JOIN dept_manager AS dm ON e.emp_no = dm.emp_no
+            salary
+FROM employees.employees AS e
+	JOIN dept_manager AS dm ON e.emp_no = dm.emp_no AND dm.to_date > NOW()
+	JOIN salaries AS s ON s.emp_no = dm.emp_no AND s.to_date > NOW()
 	JOIN departments AS d ON dm.dept_no = d.dept_no
-WHERE dm.to_date AND dm.emp_no LIKE '9999%';
+ORDER BY dept_name;
 
 /* 6. Find the number of current employees in each department.
 
@@ -151,8 +151,14 @@ WHERE dm.to_date AND dm.emp_no LIKE '9999%';
 | d009    | Customer Service   | 17569         |
 +---------+--------------------+---------------+
 */
+SELECT d.dept_no, dept_name, COUNT(de.emp_no) AS num_employees
+FROM departments AS d
+	JOIN dept_emp AS de ON d.dept_no = de.dept_no AND de.to_date > NOW()
+GROUP BY dept_no
+ORDER BY dept_no;
 
-/* Which department has the highest average salary? Hint: Use current not historic information.
+
+/* 7. Which department has the highest average salary? Hint: Use current not historic information.
 
 +-----------+----------------+
 | dept_name | average_salary |
@@ -160,6 +166,14 @@ WHERE dm.to_date AND dm.emp_no LIKE '9999%';
 | Sales     | 88852.9695     |
 +-----------+----------------+
 */
+
+SELECT dept_name, AVG(salary) AS average_salary
+FROM departments AS d
+	JOIN dept_emp AS de ON d.dept_no = de.dept_no AND de.to_date > NOW()
+	JOIN salaries AS s ON de.emp_no = s.emp_no AND s.to_date > NOW()
+GROUP BY dept_name
+ORDER BY AVG(salary) DESC
+LIMIT 1;
 
 /* Who is the highest paid employee in the Marketing department?
 
@@ -170,6 +184,16 @@ WHERE dm.to_date AND dm.emp_no LIKE '9999%';
 +------------+-----------+
 */
 
+SELECT first_name, last_name
+FROM employees AS e
+	JOIN salaries AS s USING (emp_no)
+    JOIN dept_emp AS de USING (emp_no)
+    JOIN departments AS d ON de.dept_no = d.dept_no
+							AND d.dept_name = 'Marketing'
+ORDER BY salary DESC
+LIMIT 1;
+
+
 /* 9. Which current department manager has the highest salary?
 
 +------------+-----------+--------+-----------+
@@ -179,8 +203,16 @@ WHERE dm.to_date AND dm.emp_no LIKE '9999%';
 +------------+-----------+--------+-----------+
 */
 
+SELECT first_name, last_name, salary, dept_name
+FROM employees AS e
+	JOIN dept_manager AS dm ON e.emp_no = dm.emp_no AND dm.to_date > NOW()
+	JOIN salaries AS s ON s.emp_no = dm.emp_no AND s.to_date > NOW()
+    JOIN departments AS d USING (dept_no)
+    ORDER BY salary DESC
+    LIMIT 1;
 
-/*	Determine the average salary for each department. 
+
+/*	10. Determine the average salary for each department. 
 	Use all salary information and round your results.
 
 +--------------------+----------------+
@@ -206,6 +238,13 @@ WHERE dm.to_date AND dm.emp_no LIKE '9999%';
 +--------------------+----------------+
 */
 
+SELECT dept_name, ROUND(AVG(salary)) AS average_salary
+FROM departments AS d
+	JOIN dept_emp USING(dept_no)
+    JOIN salaries USING(emp_no)
+GROUP BY dept_name
+ORDER BY average_salary DESC;
+
 /* Bonus Find the names of all current employees,
 	their department name, and their current manager's name.
 
@@ -216,3 +255,5 @@ Employee Name | Department Name  |  Manager Name
  Huan Lortz   | Customer Service | Yuchang Weedman
  .....
  */
+
+

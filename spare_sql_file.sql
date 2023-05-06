@@ -1,3 +1,5 @@
+-- TODO: exercise 12
+
 USE employees;
 SHOW CREATE TABLE departments;
 SHOW CREATE TABLE dept_emp;
@@ -15,6 +17,17 @@ CREATE TABLE `dept_emp` (
 */
 SHOW CREATE TABLE dept_manager;
 SHOW CREATE TABLE employees;
+/*
+CREATE TABLE `employees` (
+  `emp_no` int NOT NULL,
+  `birth_date` date NOT NULL,
+  `first_name` varchar(14) NOT NULL,
+  `last_name` varchar(16) NOT NULL,
+  `gender` enum('M','F') NOT NULL,
+  `hire_date` date NOT NULL,
+  PRIMARY KEY (`emp_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+*/
 SHOW CREATE TABLE salaries;
 SHOW CREATE TABLE titles;
 /*

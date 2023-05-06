@@ -143,45 +143,57 @@ FROM departments AS d
 	JOIN dept_emp AS de USING (dept_no)
 WHERE de.emp_no = 43624;
 
--- STILL WORKING
 -- 4. Who is the highest paid employee within each department.
 -- assuming current
-SELECT d.dept_name AS dept_name,
-		CONCAT(e.first_name, ' ', e.last_name) AS full_name, 
-        mx.max_salary
-        FROM (SELECT de.dept_no AS dept_no,
-						s.emp_no AS emp_no,
-                        MAX(s.salary)
-				FROM salaries AS s
-			JOIN dept_emp AS de USING (emp_no)
-				GROUP BY de.dept_no, s.emp_no) AS mx
-			JOIN departments AS d USING(dept_no)
-			JOIN dept_emp AS de USING(dept_no)
-			JOIN employees.employees As e USING (emp_no);
+-- current employee salaries subquery
+SELECT *
+FROM departments AS d
+	JOIN dept_emp AS de ON d.dept_no = de.dept_no AND de.to_date > NOW()
+	JOIN employees AS e USING (emp_no)
+    JOIN salaries AS s ON s.emp_no = e.emp_no AND s.to_date > NOW();
 
-SELECT d.dept_name AS dept_name,
-		CONCAT(e.first_name, ' ', e.last_name) AS full_name
-	FROM employees.employees AS e
-		JOIN dept_emp AS de USING (emp_no)
-		JOIN departments AS d USING (dept_no)
-    WHERE e.emp_no IN (SELECT s.emp_no
-						FROM salaries AS s
-                        WHERE s.to_date > NOW()
-							AND s.emp_no IN (SELECT MAX(s.salary)
-											FROM salaries AS s
-												JOIN dept_emp AS de USING (emp_no)
-                                            GROUP BY de.dept_no));
+-- highest salary in each department
+SELECT dept_no, MAX(salary)
+FROM dept_emp AS de
+    JOIN salaries AS s ON s.emp_no = de.emp_no AND s.to_date > NOW()
+GROUP BY dept_no;
 
+-- JOINING highest salaries with curr_empl_salaries
+SELECT dept_name, first_name, last_name, salary
+FROM (
+		SELECT d.dept_no, d.dept_name, e.*, s.salary
+		FROM departments AS d
+			JOIN dept_emp AS de ON d.dept_no = de.dept_no AND de.to_date > NOW()
+			JOIN employees AS e USING (emp_no)
+			JOIN salaries AS s ON s.emp_no = e.emp_no AND s.to_date > NOW()
+		) AS c -- curr_empl_salaries
+	JOIN (
+		SELECT dept_no, MAX(salary) AS max_salary
+		FROM dept_emp AS de
+			JOIN salaries AS s ON s.emp_no = de.emp_no AND s.to_date > NOW()
+		GROUP BY dept_no
+		) AS m -- max_salaries_by_dept 
+			USING (dept_no)
+WHERE c.salary = m.max_salary;
 
-SELECT de.dept_no, s.emp_no, MAX(s.salary) AS max_salary
-FROM salaries AS s
-	JOIN dept_emp AS de USING (emp_no)
-GROUP BY de.dept_no, s.emp_no;
+-- instructor answer below
+SELECT d.dept_name, e.first_name, e.last_name, s.salary
+FROM departments d
+    JOIN dept_emp de USING(dept_no)
+    JOIN employees e USING(emp_no)
+    JOIN salaries s USING(emp_no)
+WHERE s.salary IN (
+  SELECT MAX(salary)
+  FROM salaries
+  GROUP BY d.dept_no
+)
+ORDER BY d.dept_name, s.salary DESC;
 
 SELECT *
-FROM salaries AS s
-WHERE s.to_date > NOW()
-	AND s.salary IN (SELECT MAX(s.salary)
-					FROM salaries AS s
-						JOIN dept_emp AS de USING (emp_no)
-					GROUP BY de.dept_no);
+FROM departments AS d
+	JOIN dept_emp AS de ON d.dept_no = de.dept_no AND de.to_date > NOW()
+	JOIN employees AS e USING (emp_no)
+    JOIN salaries AS s ON s.emp_no = e.emp_no AND s.to_date > NOW()
+WHERE salary IN (SELECT MAX(salary)
+					FROM salaries
+                    GROUP BY d.dept_no);
