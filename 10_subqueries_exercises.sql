@@ -6,6 +6,7 @@ WHERE e.hire_date = (SELECT e.hire_date
 						WHERE e.emp_no = 101010); -- 69 rows
 
 
+
 -- 2. Find all the titles ever held by all current employees with the first name Aamod.
 
 /* All titles *currently* held by all current employees name Aamod, NOT the question
